@@ -1,49 +1,39 @@
-# Beginner-friendly checker for temp_conversion_tool.py
+# Global conversion factors
+FAHRENHEIT_TO_CELSIUS_FACTOR = 5 / 9
+CELSIUS_TO_FAHRENHEIT_FACTOR = 9 / 5
 
-# 1. Import the module
-import fns_and_dsa.temp_conversion_tool as temp_module
 
-passed = True
+def convert_to_celsius(fahrenheit):
+    """Convert Fahrenheit to Celsius using global factor."""
+    return (fahrenheit - 32) * FAHRENHEIT_TO_CELSIUS_FACTOR
 
-# 2. Check global variables
-if hasattr(temp_module, "FAHRENHEIT_TO_CELSIUS_FACTOR") and hasattr(temp_module, "CELSIUS_TO_FAHRENHEIT_FACTOR"):
-    print("Global conversion factors defined.")
-else:
-    print("Error: Global conversion factors not defined.")
-    passed = False
 
-# 3. Check conversion functions
-try:
-    if callable(temp_module.convert_to_celsius) and callable(temp_module.convert_to_fahrenheit):
-        # Simple test
-        c = temp_module.convert_to_celsius(32)
-        f = temp_module.convert_to_fahrenheit(0)
-        if round(c, 2) == 0 and round(f, 2) == 32:
-            print("Conversion functions implemented correctly.")
-        else:
-            print("Error: Conversion functions return wrong values.")
-            passed = False
+def convert_to_fahrenheit(celsius):
+    """Convert Celsius to Fahrenheit using global factor."""
+    return (celsius * CELSIUS_TO_FAHRENHEIT_FACTOR) + 32
+
+
+def main():
+    # Prompt for temperature input
+    temp_input = input("Enter the temperature to convert: ").strip()
+    try:
+        temperature = float(temp_input)
+    except ValueError:
+        raise ValueError("Invalid temperature. Please enter a numeric value.")
+
+    # Prompt for unit
+    unit = input("Is this temperature in Celsius or Fahrenheit? (C/F): ").strip().upper()
+
+    # Convert based on unit
+    if unit == "C":
+        converted = convert_to_fahrenheit(temperature)
+        print(f"{temperature}°C is {converted}°F")
+    elif unit == "F":
+        converted = convert_to_celsius(temperature)
+        print(f"{temperature}°F is {converted}°C")
     else:
-        print("Error: Conversion functions not defined.")
-        passed = False
-except:
-    print("Error: Conversion functions caused an exception.")
-    passed = False
+        print("Invalid unit. Please enter 'C' or 'F'.")
 
-# 4. Check ValueError for non-numeric input
-try:
-    temp_module.main()
-except ValueError as ve:
-    if str(ve) == "Invalid temperature. Please enter a numeric value.":
-        print("ValueError correctly implemented for non-numeric input.")
-    else:
-        print("Error: ValueError message is incorrect.")
-        passed = False
-except:
-    print("Error: main() caused an unexpected exception.")
-    passed = False
 
-if passed:
-    print("\nAll checks passed. Your temp_conversion_tool.py meets the requirements.")
-else:
-    print("\nSome checks failed. Review the messages above.")
+if __name__ == "__main__":
+    main()
