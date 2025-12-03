@@ -4,6 +4,10 @@ class Book:
         self.title = title
         self.author = author
 
+    def __str__(self):
+        """String representation for a regular Book."""
+        return f"Book: {self.title} by {self.author}"
+
 
 class EBook(Book):
     def __init__(self, title, author, file_size):
@@ -11,12 +15,20 @@ class EBook(Book):
         super().__init__(title, author)
         self.file_size = file_size  # in KB
 
+    def __str__(self):
+        """String representation for an EBook."""
+        return f"EBook: {self.title} by {self.author}, File Size: {self.file_size}KB"
+
 
 class PrintBook(Book):
     def __init__(self, title, author, page_count):
         """PrintBook inherits from Book and adds page count."""
         super().__init__(title, author)
         self.page_count = page_count  # number of pages
+
+    def __str__(self):
+        """String representation for a PrintBook."""
+        return f"PrintBook: {self.title} by {self.author}, Page Count: {self.page_count}"
 
 
 class Library:
@@ -29,11 +41,6 @@ class Library:
         self.books.append(book)
 
     def list_books(self):
-        """Print details of all books in the library."""
+        """Print details of all books using each object's __str__ method."""
         for book in self.books:
-            if isinstance(book, EBook):
-                print(f"EBook: {book.title} by {book.author}, File Size: {book.file_size}KB")
-            elif isinstance(book, PrintBook):
-                print(f"PrintBook: {book.title} by {book.author}, Page Count: {book.page_count}")
-            else:
-                print(f"Book: {book.title} by {book.author}")
+            print(book)
